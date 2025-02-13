@@ -5,7 +5,11 @@ The scDHA software package can perform cell clustering through unsupervised lear
 
 Clone the repository: https://github.com/Huyanmei123/AC.git
 
+The main interface of the function is in adaptive.R
+
 # To run the Goolam example
+- New a file, and add the source  `source('adaptive.R')`
+- 
 - Get the dataset and its true label. `data<-read.csv("/your path/goolam.csv",header=TRUE)`, `label<-read.csv("/your_path/goolam_label.csv",header=True)`
 
 - Log transform the data: `data <- log2(data + 1)`
