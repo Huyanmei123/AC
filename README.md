@@ -3,7 +3,7 @@ The scDHA software package can perform cell clustering through unsupervised lear
 
 
 
-Clone the repository 
+Clone the repository: https://github.com/Huyanmei123/AC.git
 
 # To run the Goolam example
 - Get the dataset and its true label. `data<-read.csv("/your path/goolam.csv",header=TRUE)`, `label<-read.csv("/your_path/goolam_label.csv",header=True)`
