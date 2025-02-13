@@ -2,7 +2,7 @@
 The scDHA_ac can perform cell clustering through unsupervised learning, which is developed by R language. We suggest that you could run it on R-studio or vscode.
 
 
-
+# Basic Usage
 Clone the repository: https://github.com/Huyanmei123/AC.git
 
 The main interface of the function is in adaptive.R
@@ -10,7 +10,9 @@ The main interface of the function is in adaptive.R
 # To run the Goolam example
 - New a file, and add the source  `source('adaptive.R')`
 
-- Get the dataset and its true label. `data<-read.csv("/your path/goolam.csv",header=TRUE)`, `label<-read.csv("/your_path/goolam_label.csv",header=True)`
+- Get the dataset `data<-read.csv("/your path/goolam.csv",header=TRUE)`
+
+- Get its true label  `label<-read.csv("/your_path/goolam_label.csv",header=True)`,`label<-label$cell_type1`
 
 - Log transform the data: `data <- log2(data + 1)`
 
