@@ -1,5 +1,5 @@
 # scDHA_ac
-The scDHA software package can perform cell clustering through unsupervised learning, .which is developed by R language. We suggest that you run it on R-studio or vscode.
+The scDHA_ac can perform cell clustering through unsupervised learning, which is developed by R language. We suggest that you could run it on R-studio or vscode.
 
 
 
