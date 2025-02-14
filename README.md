@@ -3,6 +3,8 @@ The scDHA_ac can perform cell clustering through unsupervised learning, which is
 
 
 # Basic Usage
+Make sure that R language development environment is ready on your machine.
+
 Clone the repository: https://github.com/Huyanmei123/AC.git
 
 The main interface of the function is in adaptive.R
