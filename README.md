@@ -12,7 +12,7 @@ The main interface of the function is in adaptive.R
 # To run the Goolam example
 - New a file, and add the source  `source('adaptive.R')`
 
-- Get the dataset `data<-read.csv("/your path/goolam.csv",header=TRUE)`
+- Get the dataset `data<-read.csv("/your_path/goolam.csv",header=TRUE)`
 
 - Get its true label  `label<-read.csv("/your_path/goolam_label.csv",header=True)`,`label<-label$cell_type1`
 
