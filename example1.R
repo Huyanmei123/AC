@@ -8,7 +8,7 @@ data<-log(data+1)
 
 
 label<-read.csv("./goolam/goolam_label.csv", header = TRUE, row.names = 1)
-ncores <- 8
+ncores <- 4
 seed <- 0
 result <- adaptive(k = NULL, data = data, ncores = ncores, seed = seed)
 
