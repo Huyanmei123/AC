@@ -9,12 +9,12 @@ library(igraph)
 clus <- function(data, k = NULL, nmax = 10) #, ncore = 2
 {
   source("./R/mySC1.R")
-  cat(paste0("start k: ",k))
+  
   if (is.null(k)){
-  cat("nclusterPar\n")
-  k <- nclusterPar(data, nmax = nmax) #, ncore = ncore
-  # cat(paste0("k=",k,"\n"),file = "./outputdata/logger.txt",append = T)
-  print(paste0("init k: ",k,"\n"))
+ 
+  k <- nclusterPar(data, nmax = nmax) 
+
+
   }
   if (nrow(data) < 1e3 & (k < 5)) 
   {
@@ -23,16 +23,16 @@ clus <- function(data, k = NULL, nmax = 10) #, ncore = 2
   } 
   else
   {
-    cat(paste0("this time k: ",k,"\n"))
+   
     kknn <- try(specClust(data, k, nn = 7))
   
     while (is(kknn, "try-error")) {
       k <- k + 1
-      cat(paste0("this time k: ",k,"\n"))
+      
       kknn <- try(specClust(data, k, nn = 7))
       
     }
-    cat("finish")
+  
     kknn$cluster
   }
 
@@ -43,9 +43,9 @@ clus.big <- function(data, k = NULL, n = 2e3, nmax = 10) #, ncore = 2
   ind <- sample.int(nrow(data), n)
   ind1 <- (1:nrow(data))[-ind]
   tmp <- data[ind,] ####sample
-  tmp1 <- data[-ind,] ####complementary set of the sample
+  tmp1 <- data[-ind,] ####complementary set
   
-  clus.tmp <- clus(tmp,k, nmax = nmax)
+  clus.tmp <- clus(tmp,k, nmax = nmax) 
 
   nn.tmp <- matrix(ncol = 10, nrow = nrow(tmp1)) 
   if(nrow(tmp1) > 10e3)
@@ -55,8 +55,7 @@ clus.big <- function(data, k = NULL, n = 2e3, nmax = 10) #, ncore = 2
   else {
     folds <- c(1, nrow(tmp1)) 
   }
-  print(paste0("folds: ",folds))
-  print(paste0("dim: ",dim(tmp1)))
+  
   for (i in 2:length(folds)) {
     
     dis.tmp <- 1 - my_cos(tmp1[folds[i-1]:folds[i], ], tmp)
@@ -80,7 +79,6 @@ clus.big <- function(data, k = NULL, n = 2e3, nmax = 10) #, ncore = 2
 
 clus.louvain <- function(data)
 {
-  print("clus.louvain")
   if(nrow(data) <= 10e3)
   {
     n <- nrow(data)
