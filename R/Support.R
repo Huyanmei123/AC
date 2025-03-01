@@ -16,7 +16,7 @@ clus <- function(data, k = NULL, nmax = 10) #, ncore = 2
   # cat(paste0("k=",k,"\n"),file = "./outputdata/logger.txt",append = T)
   print(paste0("init k: ",k,"\n"))
   }
-  if (nrow(data) < 1e3 & (k < 5))   ####如果数据量小于1000，且knn小于5，就用kmeans
+  if (nrow(data) < 1e3 & (k < 5)) 
   {
     k <- kmeans(data, k, nstart = 1e3, iter.max = 1e3)
     k$cluster
@@ -42,10 +42,10 @@ clus.big <- function(data, k = NULL, n = 2e3, nmax = 10) #, ncore = 2
 {
   ind <- sample.int(nrow(data), n)
   ind1 <- (1:nrow(data))[-ind]
-  tmp <- data[ind,] ####抽样
-  tmp1 <- data[-ind,] ####抽样的补集
+  tmp <- data[ind,] ####sample
+  tmp1 <- data[-ind,] ####complementary set of the sample
   
-  clus.tmp <- clus(tmp,k, nmax = nmax) ########scDHA处理（抽样数据）
+  clus.tmp <- clus(tmp,k, nmax = nmax)
 
   nn.tmp <- matrix(ncol = 10, nrow = nrow(tmp1)) 
   if(nrow(tmp1) > 10e3)
