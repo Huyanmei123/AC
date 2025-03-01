@@ -61,7 +61,6 @@ adaptive.basic <- function(k = NULL, data, method = "adaptive", n = 5e3, ncores 
     })
     set.seed(seed)
     final <- clustercom2(result)
-    print(final)
     g.en <- latent[[which.max(sapply(result$all, function(x) adjustedRandIndex(x,final)))]]
     final <- as.numeric(factor(final))
     
