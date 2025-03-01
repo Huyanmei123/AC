@@ -20,14 +20,14 @@ fast.table <- function (data)
 }
 
 my_cos <- function(X, Y) {
-  # 将 X 和 Y 转换为 Torch 张量
+ 
   norm_X <- sqrt(rowSums(X^2))
   norm_Y <- sqrt(rowSums(Y^2))
   
-  # 计算X和Y的内积矩阵
+  
   dot_product <- tcrossprod(X, Y)
   
-  # 使用outer来归一化内积结果，得到余弦相似度矩阵
+ 
   m <- dot_product / outer(norm_X, norm_Y)
   
   return(m)
@@ -80,57 +80,53 @@ mydist <- function(data)
   C <- list()
   
   for (i in 1:nrow(num)) {
-    # if (i %% 1000 == 0) {
-    #   cat("Processing:", i, "\n")
-    # }
-    
-    # 获取第i行数据
+
     h <- num[i, ]
     
-    # 创建一个从1到nrow(num)的序列，表示所有的行索引
+ 
     hj <- seq(1, nrow(num))
     
-    # 排除当前行
+
     hj <- hj[hj != i]
     
-    # 根据排除后的索引来选择数据
+   
     h <- h[hj]
     
-    # 按照降序排序
+ 
     sorted_indices <- order(h, decreasing = TRUE)
     h <- h[sorted_indices]
     hj <- hj[sorted_indices]
     
-    # 计算均值并进行过滤
+   
     min_index <- 0
     if (is.null(kmax)) {
       m <- mean(h)
       bool_tensor <- h < m
-      #endindex <- 250  # 获取第一个小于均值的最大索引
+   
       endindex <- which.max(bool_tensor)
       h <- h[1:endindex]
       hj <- hj[1:endindex]
       
-      # 计算一阶和二阶导数
+      # 
       hh <- diff(h)
       hhh <- diff(hh)
       
-      # 获取二阶导数的最小值索引
+    
       min_index <- which.min(hhh)
     } else {
       min_index <- kmax
     }
     
-    # 选择前min_index个元素
+ 
     selected_hj <- hj[1:min_index]
     selected_h <- h[1:min_index]
     
-    # 将选择的结果添加到D和C
+   
     D <- c(D, list(selected_h))
     C <- c(C, list(selected_hj))
   }
   DC = list(D, C)
-  cat("mydist\n")
+ 
   return(DC)
 }
 
@@ -149,17 +145,16 @@ getClosest = function(X, Y)
 
 
 Laplacian <- function(DC, k, normalize="none") {
-  m = length(DC[[1]])  # 获取DC[[1]]的长度
-  edges <- matrix(ncol = 3, nrow = 0)  # 创建一个空矩阵，3列用于保存边和权重
-  print(paste0("Laplacian graph ", "construct"))
+  m = length(DC[[1]])  
+  edges <- matrix(ncol = 3, nrow = 0)  
   for(i in 1:m) {
     for(j in 1:length(DC[[2]][[i]])) {
       edge1 <- c(i, DC[[2]][[i]][[j]], DC[[1]][[i]][[j]])
-      edges <- rbind(edges, edge1)  # 将边信息按行追加到矩阵中
+      edges <- rbind(edges, edge1)  
     }
   }
   
-  # 确保edges是正确的格式
+  
   g <- NULL
   if(ncol(edges) == 3) {
     edges_df <- as.data.frame(edges)
@@ -169,35 +164,6 @@ Laplacian <- function(DC, k, normalize="none") {
     stop("Edge list format error: edges should have 3 columns (source, target, weight).")
   }
   
-  # 计算拉普拉斯矩阵
-  #edges_list <- list()  # 存储边的列表
-  # print(paste0("Laplacian graph ", "construct"))
-  # # 添加边
-  # for (i in 1:m) {
-  #   for (j in 1:length(DC[[2]][[i]])) {
-  #     edge1 <- c(i, DC[[2]][[i]][[j]], DC[[1]][[i]][[j]])
-  #     edge2 <- c(DC[[2]][[i]][[j]], i, DC[[1]][[i]][[j]])
-  #     
-  #     # 将每条边转化为唯一的字符标识符
-  #     edge1_key <- paste(edge1, collapse = "_")
-  #     edge2_key <- paste(edge2, collapse = "_")
-  #     
-  #     # 检查是否已存在，若不存在，则添加
-  #     if (!exists(edge1_key, envir = edge_set)) {
-  #       assign(edge1_key, TRUE, envir = edge_set)  # 标记已存在
-  #       edges_list <- append(edges_list, list(edge1))  # 添加到边列表
-  #     }
-  #     
-  #     if (!exists(edge2_key, envir = edge_set)) {
-  #       assign(edge2_key, TRUE, envir = edge_set)
-  #       edges_list <- append(edges_list, list(edge2))
-  #     }
-  #   }
-  # }
-  # matrix <- do.call(rbind, lapply(edges_list, function(x) unlist(x)))
-  # print(paste0("Laplacian graph ", "finish"))
-  print(paste0("Laplacian graph ", "finish"))
-  ##########获得g的source边
   source = get.edgelist(g)
   weights = E(g)$weight
   i = c(as.numeric(source[,1]), as.numeric(source[,2]))
@@ -254,6 +220,7 @@ specClust <- function (data, centers=NULL, nn = 7, method = "symmetric", gmax=NU
   call = match.call()
   if(is.data.frame(data)) data = as.matrix(data)
   # unique data points
+  #data <- as.matrix(data) 
   da = apply(data,1, paste, collapse="#")
   indUnique = which(!duplicated(da))
   indAll = match(da, da[indUnique])
@@ -262,7 +229,7 @@ specClust <- function (data, centers=NULL, nn = 7, method = "symmetric", gmax=NU
   data  = data[indUnique, ]
   n <- nrow(data)
   
-  #data = scale(data, FALSE, TRUE)
+ 
   
   
   if(is.null(gmax)){
@@ -270,33 +237,19 @@ specClust <- function (data, centers=NULL, nn = 7, method = "symmetric", gmax=NU
     else gmax = 1L
   }
   test=TRUE
-  # DC.tmp = origin_mydist(data, 30)
-  # while(test){
-  #   if(nn > ncol(DC.tmp[[1]])) DC.tmp = origin_mydist(data, nn*2)
-  #   
-  #   DC = list(DC.tmp[[1]][,1:nn], DC.tmp[[2]][,1:nn])
-  #   sif <- rbind(1:n, as.vector(DC[[2]]))
-  #   g <- graph(sif, directed=FALSE)
-  #   g <- decompose(g, min.vertices=4)
-  #   if (length(g) > 1) {
-  #     #warning("graph not connected")
-  #     if(length(g)>=gmax) nn = nn+2
-  #     else test=FALSE
-  #   }
-  #   else test=FALSE
-  # }
+ 
   
   DC.tmp = mydist(data)
-  # cat(paste0("nn=",nn,"\n"),file = "./outputdata/logger.txt",append = T)
+
   DC = list(DC.tmp[[1]], DC.tmp[[2]])
   W <- DC[[1]]
-  # #######选取W每一个list的最后一个元素
+ 
   wi <- c()
   for(i in 1:length(W))
   {
     wi <- c(wi,W[[i]][length(W[[i]])])
   }
-  ##(W)    DC[[2]]
+
   SC <- lapply(DC[[2]], function(sublist) lapply(sublist, function(x) rep(1, length(x))))
   for(i in 1:length(W))
   {
@@ -305,7 +258,7 @@ specClust <- function (data, centers=NULL, nn = 7, method = "symmetric", gmax=NU
       SC[[i]][[j]] <- wi[DC[[2]][[i]][[j]]][[1]] * wi[[i]]
     }
   }
-  # SC[] <-  wi[DC[[2]]] * wi
+
   for(i in 1:length(SC))
   {
     for(j in 1:length(SC[[i]]))
@@ -313,7 +266,7 @@ specClust <- function (data, centers=NULL, nn = 7, method = "symmetric", gmax=NU
       W[[i]][[j]] <- (W[[i]][[j]]*W[[i]][[j]]) / SC[[i]][[j]]
     }
   }
-  # W = W^2 / SC
+
   for(i in 1:length(W))
   {
     alpha = 1/(2*(length(W[[i]])+1))
